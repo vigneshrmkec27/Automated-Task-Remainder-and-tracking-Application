@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Task</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>✏️ Edit Task</h1>
+            <p>Update task details</p>
+        </div>
+
+        <!-- Alert Messages -->
+        <div th:if="${errorMessage}" class="alert alert-error">
+            <span th:text="${errorMessage}"></span>
+        </div>
+
+        <!-- Task Form -->
+        <form th:action="@{/tasks/edit/{id}(id=${task.id})}" 
+              th:object="${task}" 
+              method="post">
+            
+            <!-- Task ID (Hidden) -->
+            <input type="hidden" th:field="*{id}">
+
+            <!-- Task Title -->
+            <div class="form-group">
+                <label for="title">Task Title *</label>
+                <input type="text" 
+                       id="title" 
+                       th:field="*{title}" 
+                       class="form-control" 
+                       placeholder="Enter task title"
+                       required
+                       maxlength="200">
+            </div>
+
+            <!-- Task Description -->
+            <div class="form-group">
+                <label for="description">Task Description</label>
+                <textarea id="description" 
+                          th:field="*{description}" 
+                          class="form-control" 
+                          placeholder="Enter detailed description (optional)"
+                          maxlength="1000"></textarea>
+            </div>
+
+            <!-- Task Priority -->
+            <div class="form-group">
+                <label for="priority">Priority *</label>
+                <select id="priority" 
+                        th:field="*{priority}" 
+                        class="form-control" 
+                        required>
+                    <option value="">-- Select Priority --</option>
+                    <option th:each="priority : ${priorities}" 
+                            th:value="${priority}" 
+                            th:text="${priority.displayName}"
+                            th:selected="${priority == task.priority}">
+                        High Priority
+                    </option>
+                </select>
+            </div>
+
+            <!-- Task Status -->
+            <div class="form-group">
+                <label for="status">Status *</label>
+                <select id="status" 
+                        th:field="*{status}" 
+                        class="form-control" 
+                        required>
+                    <option value="">-- Select Status --</option>
+                    <option th:each="status : ${statuses}" 
+                            th:value="${status}" 
+                            th:text="${status.displayName}"
+                            th:selected="${status == task.status}">
+                        Pending
+                    </option>
+                </select>
+            </div>
+
+            <!-- Task Metadata -->
+            <div class="task-detail" style="margin: 20px 0;">
+                <div class="task-detail-item">
+                    <label>Created On:</label>
+                    <p th:text="${#temporals.format(task.createdOn, 'MMMM dd, yyyy HH:mm:ss')}">
+                        December 15, 2024 10:30:45
+                    </p>
+                </div>
+                <div class="task-detail-item" th:if="${task.completedOn != null}">
+                    <label>Completed On:</label>
+                    <p th:text="${#temporals.format(task.completedOn, 'MMMM dd, yyyy HH:mm:ss')}">
+                        December 16, 2024 14:20:30
+                    </p>
+                </div>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="action-bar" style="margin-top: 30px;">
+                <a th:href="@{/tasks}" class="btn btn-secondary">← Back to Tasks</a>
+                <button type="submit" class="btn btn-primary">💾 Update Task</button>
+            </div>
+        </form>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>&copy; 2024 Task Management System</p>
+        </div>
+    </div>
+</body>
+</html>

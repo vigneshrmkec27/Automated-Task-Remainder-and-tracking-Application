@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Task</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>📝 Add New Task</h1>
+            <p>Create a new task to manage</p>
+        </div>
+
+        <!-- Alert Messages -->
+        <div th:if="${errorMessage}" class="alert alert-error">
+            <span th:text="${errorMessage}"></span>
+        </div>
+
+        <!-- Task Form -->
+        <form th:action="@{/tasks/add}" th:object="${task}" method="post">
+            
+            <!-- Task Title -->
+            <div class="form-group">
+                <label for="title">Task Title *</label>
+                <input type="text" 
+                       id="title" 
+                       th:field="*{title}" 
+                       class="form-control" 
+                       placeholder="Enter task title"
+                       required
+                       maxlength="200">
+            </div>
+
+            <!-- Task Description -->
+            <div class="form-group">
+                <label for="description">Task Description</label>
+                <textarea id="description" 
+                          th:field="*{description}" 
+                          class="form-control" 
+                          placeholder="Enter detailed description (optional)"
+                          maxlength="1000"></textarea>
+            </div>
+
+            <!-- Task Priority -->
+            <div class="form-group">
+                <label for="priority">Priority *</label>
+                <select id="priority" 
+                        th:field="*{priority}" 
+                        class="form-control" 
+                        required>
+                    <option value="">-- Select Priority --</option>
+                    <option th:each="priority : ${priorities}" 
+                            th:value="${priority}" 
+                            th:text="${priority.displayName}">
+                        High Priority
+                    </option>
+                </select>
+            </div>
+
+            <!-- Task Status -->
+            <div class="form-group">
+                <label for="status">Status *</label>
+                <select id="status" 
+                        th:field="*{status}" 
+                        class="form-control" 
+                        required>
+                    <option value="">-- Select Status --</option>
+                    <option th:each="status : ${statuses}" 
+                            th:value="${status}" 
+                            th:text="${status.displayName}">
+                        Pending
+                    </option>
+                </select>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="action-bar" style="margin-top: 30px;">
+                <a th:href="@{/tasks}" class="btn btn-secondary">← Back to Tasks</a>
+                <button type="submit" class="btn btn-primary">💾 Save Task</button>
+            </div>
+        </form>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>&copy; 2024 Task Management System</p>
+        </div>
+    </div>
+</body>
+</html>
