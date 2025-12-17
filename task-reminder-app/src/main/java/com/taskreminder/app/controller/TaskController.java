@@ -10,9 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-/**
- * TaskController - Handles all HTTP requests related to tasks
- */
+
 @Controller
 @RequestMapping("/tasks")
 @RequiredArgsConstructor
@@ -20,10 +18,7 @@ public class TaskController {
 
     private final TaskService taskService;
 
-    /**
-     * Display all tasks
-     * URL: GET /tasks
-     */
+   
     @GetMapping
     public String listTasks(Model model) {
         model.addAttribute("tasks", taskService.getAllTasks());
@@ -31,10 +26,7 @@ public class TaskController {
         return "tasks";
     }
 
-    /**
-     * Show form to add new task
-     * URL: GET /tasks/add
-     */
+   
     @GetMapping("/add")
     public String showAddTaskForm(Model model) {
         model.addAttribute("task", new Task());
@@ -43,10 +35,7 @@ public class TaskController {
         return "add-task";
     }
 
-    /**
-     * Create a new task
-     * URL: POST /tasks/add
-     */
+   
     @PostMapping("/add")
     public String addTask(@ModelAttribute Task task, RedirectAttributes redirectAttributes) {
         try {
@@ -59,10 +48,7 @@ public class TaskController {
         }
     }
 
-    /**
-     * View single task details
-     * URL: GET /tasks/view/{id}
-     */
+   
     @GetMapping("/view/{id}")
     public String viewTask(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
         return taskService.getTaskById(id)
@@ -95,10 +81,7 @@ public class TaskController {
                 });
     }
 
-    /**
-     * Update existing task
-     * URL: POST /tasks/edit/{id}
-     */
+    
     @PostMapping("/edit/{id}")
     public String editTask(@PathVariable Long id, @ModelAttribute Task task, RedirectAttributes redirectAttributes) {
         try {
@@ -111,10 +94,7 @@ public class TaskController {
         }
     }
 
-    /**
-     * Mark task as completed
-     * URL: GET /tasks/complete/{id}
-     */
+   
     @GetMapping("/complete/{id}")
     public String markAsCompleted(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         try {
@@ -126,10 +106,7 @@ public class TaskController {
         return "redirect:/tasks";
     }
 
-    /**
-     * Delete task
-     * URL: GET /tasks/delete/{id}
-     */
+   
     @GetMapping("/delete/{id}")
     public String deleteTask(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         try {
@@ -140,4 +117,5 @@ public class TaskController {
         }
         return "redirect:/tasks";
     }
+
 }
